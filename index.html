@@ -1,0 +1,318 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#07070a">
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="icons/icon-32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+<link rel="icon" type="image/png" sizes="512x512" href="icons/icon-512.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="manifest" href="manifest.json">
+<title>Hood Boss QA Brain // Master Control v2</title>
+<style>
+:root{--g:#00ff87;--c:#60efff;--p:#ff0080;--y:#ffcc00;--v:#07070a;--panel:#0c0c11;--panel2:#111118;--line:#24242d;--muted:#8e8e9c;--white:#f3f3f6}
+*{box-sizing:border-box}html,body{margin:0;background:var(--v);color:var(--white);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+body{min-height:100vh;background-image:linear-gradient(rgba(0,255,135,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(96,239,255,.02) 1px,transparent 1px);background-size:36px 36px}
+button,input,select{font:inherit}.glass{background:linear-gradient(145deg,rgba(17,17,24,.94),rgba(8,8,12,.91));border:1px solid var(--line);box-shadow:0 18px 60px #0008;backdrop-filter:blur(16px)}
+.header{position:sticky;top:0;z-index:50;border-width:0 0 1px}
+.wrap{max-width:1650px;margin:auto}.grid{display:grid}.shell{grid-template-columns:225px minmax(0,1fr);gap:14px;padding:14px}.sidebar{position:sticky;top:73px;height:calc(100vh - 88px);overflow:auto}.main{min-width:0}
+.logo{width:42px;height:42px;border:1px solid var(--g);border-radius:12px;display:grid;place-items:center;color:var(--g);font-weight:950;box-shadow:0 0 24px #00ff8733}
+.mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}.tiny{font-size:10px;letter-spacing:.11em;text-transform:uppercase;font-weight:850}.muted{color:var(--muted)}
+.neon{color:var(--g);text-shadow:0 0 14px #00ff8770}.cyan{color:var(--c);text-shadow:0 0 14px #60efff55}.pink{color:var(--p);text-shadow:0 0 14px #ff008055}.yellow{color:var(--y);text-shadow:0 0 14px #ffcc0055}
+.btn{border:1px solid #33333e;background:#121219;color:#ddd;border-radius:9px;padding:9px 11px;cursor:pointer;font-size:10px;font-weight:900;letter-spacing:.08em;text-transform:uppercase}.btn:hover{border-color:#00ff8766;box-shadow:0 0 18px #00ff8718}.btn.primary{border-color:#00ff8777;background:#00ff870c;color:var(--g)}.btn.danger{border-color:#ff008066;color:var(--p)}.btn.cyan{border-color:#60efff66;color:var(--c);text-shadow:none}
+.nav{display:grid;gap:5px}.nav button{width:100%;text-align:left;border:1px solid transparent;background:transparent;color:#aaa;border-radius:9px;padding:10px;cursor:pointer;font-size:10px;font-weight:900;letter-spacing:.07em;text-transform:uppercase}.nav button:hover,.nav button.active{color:var(--g);border-color:#00ff8738;background:#00ff8709}
+.kpis{grid-template-columns:repeat(5,minmax(0,1fr));gap:10px}.kpi{padding:14px;min-height:112px}.value{font-size:31px;font-weight:950;letter-spacing:-.04em}.bar{height:6px;border-radius:99px;background:#191920;overflow:hidden}.fill{height:100%;border-radius:99px;box-shadow:0 0 12px currentColor}
+.two{grid-template-columns:minmax(0,1.5fr) minmax(300px,1fr);gap:12px}.three{grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.four{grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.card{padding:15px;border-radius:14px}.section{margin-top:12px}.hero{padding:20px}.hero h1{font-size:clamp(28px,4vw,52px);line-height:1.02;margin:6px 0}.hero p{max-width:850px;color:#aaa;margin:10px 0 0;line-height:1.6}
+.status{display:inline-flex;align-items:center;gap:6px;padding:5px 8px;border-radius:999px;border:1px solid #2a2a33;background:#0a0a0e;font-size:9px;font-weight:900;letter-spacing:.08em}.dot{width:7px;height:7px;border-radius:50%;background:currentColor;box-shadow:0 0 9px currentColor}
+.table{width:100%;border-collapse:collapse;font-size:11px}.table th{text-align:left;color:#777;padding:10px 8px;font-size:9px;letter-spacing:.09em;text-transform:uppercase}.table td{padding:11px 8px;border-top:1px solid #202028}.table tr:hover td{background:#ffffff03}
+.badge{display:inline-flex;padding:3px 7px;border-radius:999px;font-size:8px;font-weight:950;letter-spacing:.07em}.critical{color:var(--p);background:#ff008012;border:1px solid #ff008044}.review{color:var(--y);background:#ffcc0012;border:1px solid #ffcc0044}.pass{color:var(--g);background:#00ff8710;border:1px solid #00ff8744}.info{color:var(--c);background:#60efff10;border:1px solid #60efff44}
+.panel-title{font-size:17px;font-weight:950}.panel-head{display:flex;justify-content:space-between;align-items:flex-end;gap:10px;margin-bottom:12px}
+.event{padding:10px 0;border-top:1px solid #202028;display:grid;grid-template-columns:110px 1fr auto;gap:10px;align-items:start}.event:first-child{border-top:0}.event-type{color:var(--c);font-size:9px;font-weight:950;letter-spacing:.06em}.event-time{color:#777;font-size:9px}.event-text{font-size:11px}.event-src{font-size:9px;color:#777}
+.agent{padding:12px;border:1px solid #24242d;background:#0a0a0f;border-radius:12px}.agent-score{font-size:22px;font-weight:950}.agent small{display:block;color:#888;margin-top:5px;line-height:1.4}
+.alert{border-left:3px solid var(--p);padding:11px 12px;background:#ff008006;margin-top:7px;border-radius:0 9px 9px 0}.alert.review{border-left-color:var(--y);background:#ffcc0006}.alert.pass{border-left-color:var(--g);background:#00ff8706}
+canvas{width:100%;height:240px;display:block}
+input[type=file]{display:none}input[type=text],select{width:100%;background:#09090d;border:1px solid #30303a;color:#eee;border-radius:8px;padding:9px;font-size:11px;outline:none}input:focus,select:focus{border-color:#00ff8766}
+.page.hidden{display:none!important}.toast{position:fixed;right:18px;bottom:18px;z-index:100;max-width:380px;padding:13px;border-radius:12px}.modal{position:fixed;inset:0;background:#000b;display:grid;place-items:center;padding:18px;z-index:90}.modal.hidden{display:none}.modalbox{width:min(850px,100%);max-height:90vh;overflow:auto;padding:18px;border-radius:16px}
+.chiprow{display:flex;flex-wrap:wrap;gap:7px}.chip{padding:6px 8px;border:1px solid #292932;border-radius:999px;background:#0a0a0f;color:#aaa;font-size:9px}
+@media(max-width:1100px){.kpis{grid-template-columns:repeat(3,minmax(0,1fr))}.two{grid-template-columns:1fr}.three{grid-template-columns:1fr 1fr}}
+@media(max-width:760px){.shell{grid-template-columns:1fr}.sidebar{position:relative;top:0;height:auto}.kpis{grid-template-columns:1fr 1fr}.four,.three{grid-template-columns:1fr}.event{grid-template-columns:1fr}.hero{padding:15px}.header-actions{display:none}}
+@media(max-width:480px){.kpis{grid-template-columns:1fr}.shell{padding:8px}.card{padding:12px}}
+</style>
+</head>
+<body>
+<div id="app">
+<header class="header glass">
+<div class="wrap" style="padding:11px 14px;display:flex;align-items:center;justify-content:space-between;gap:12px">
+<div style="display:flex;align-items:center;gap:10px"><div class="logo">QB</div><div><div style="font-weight:950;letter-spacing:-.03em">QA BRAIN <span class="neon">// MASTER CONTROL</span></div><div class="tiny muted">v2 · event fabric · pattern engine · escalation</div></div></div>
+<div style="display:flex;align-items:center;gap:8px"><span id="modeStatus" class="status neon"><span class="dot"></span> OBSERVER ONLINE</span><button id="runSynthesis" class="btn primary">Run Synthesis</button></div>
+</div></header>
+
+<div class="wrap shell grid">
+<aside class="sidebar glass card">
+<div class="tiny muted" style="margin-bottom:8px">Command surfaces</div>
+<nav class="nav" id="nav">
+<button class="active" data-page="overview">◈ Command Overview</button>
+<button data-page="events">⌁ Event Ledger</button>
+<button data-page="jobs">▣ Job Intelligence</button>
+<button data-page="patterns">⌬ Pattern Engine</button>
+<button data-page="brain">◇ QA Brain</button>
+<button data-page="escalation">⚠ Escalation</button>
+<button data-page="adapters">⇄ Adapters</button>
+<button data-page="readiness">◎ Readiness</button>
+</nav>
+<div class="section card" style="background:#08080c;border:1px solid #202028">
+<div class="tiny cyan">Source discipline</div>
+<p class="muted" style="font-size:10px;line-height:1.55;margin:8px 0">This control plane observes upstream systems. It does not silently overwrite their records. Imported events remain traceable to source and timestamp.</p>
+</div>
+<label for="fileInput" class="btn primary" style="display:block;text-align:center;margin-top:8px">Import JSON Pack</label>
+<input id="fileInput" type="file" multiple accept=".json,application/json">
+<button id="loadDemo" class="btn" style="width:100%;margin-top:7px">Load Demo Dataset</button>
+<button id="clearAll" class="btn danger" style="width:100%;margin-top:7px">Clear Local Ledger</button>
+</aside>
+
+<main class="main">
+<section id="page-overview" class="page">
+<div class="glass card hero">
+<div class="tiny neon">MASTER MONITORING SYSTEM</div>
+<h1>One operational nervous system.<br><span class="cyan">Many authoritative systems.</span></h1>
+<p>QA Brain v2 correlates evidence, jobs, readiness, recurring defects and operational events into one traceable command layer. The master system detects signals; the authoritative workflow remains the source of truth.</p>
+<div class="chiprow" style="margin-top:15px"><span class="chip">EVENT LEDGER</span><span class="chip">PATTERN DETECTION</span><span class="chip">10-AGENT SYNTHESIS</span><span class="chip">ESCALATION ROUTING</span><span class="chip">PROVENANCE</span></div>
+</div>
+
+<div class="grid kpis section">
+<div class="glass card kpi"><div class="tiny muted">Operational Health</div><div id="kHealth" class="value neon">—</div><div class="bar"><div id="bHealth" class="fill neon" style="width:0%"></div></div></div>
+<div class="glass card kpi"><div class="tiny muted">Jobs Observed</div><div id="kJobs" class="value cyan">0</div><div class="muted" style="font-size:9px;margin-top:5px">normalized job records</div></div>
+<div class="glass card kpi"><div class="tiny muted">Open Signals</div><div id="kSignals" class="value yellow">0</div><div class="muted" style="font-size:9px;margin-top:5px">review + critical</div></div>
+<div class="glass card kpi"><div class="tiny muted">Critical</div><div id="kCritical" class="value pink">0</div><div class="muted" style="font-size:9px;margin-top:5px">immediate attention</div></div>
+<div class="glass card kpi"><div class="tiny muted">Evidence Coverage</div><div id="kCoverage" class="value cyan">—</div><div class="muted" style="font-size:9px;margin-top:5px">checkpoint completeness</div></div>
+</div>
+
+<div class="grid two section">
+<div class="glass card"><div class="panel-head"><div><div class="tiny muted">Risk topology</div><div class="panel-title">Signal distribution</div></div><span id="clock" class="mono tiny muted">--</span></div><canvas id="riskChart"></canvas></div>
+<div class="glass card"><div class="panel-head"><div><div class="tiny muted">Fabric health</div><div class="panel-title">Adapter status</div></div><span id="adapterCount" class="tiny neon">0 ACTIVE</span></div><div id="adapterMini"></div></div>
+</div>
+
+<div class="grid two section">
+<div class="glass card"><div class="panel-head"><div><div class="tiny muted">Attention queue</div><div class="panel-title">What needs action</div></div><button class="btn" data-page-jump="escalation">Open escalation</button></div><div id="overviewAlerts"></div></div>
+<div class="glass card"><div class="panel-head"><div><div class="tiny muted">Event stream</div><div class="panel-title">Latest telemetry</div></div><button class="btn" data-page-jump="events">Ledger</button></div><div id="overviewEvents"></div></div>
+</div>
+</section>
+
+<section id="page-events" class="page hidden"><div class="glass card"><div class="panel-head"><div><div class="tiny neon">EVENT LEDGER</div><div class="panel-title" style="font-size:28px">Append-oriented operational history (local only — Clear wipes it)</div></div><div style="display:flex;gap:6px"><button class="btn" id="exportLedger">Export JSON</button></div></div><div id="eventTable"></div></div></section>
+
+<section id="page-jobs" class="page hidden"><div class="glass card"><div class="panel-head"><div><div class="tiny cyan">JOB INTELLIGENCE</div><div class="panel-title" style="font-size:28px">Cross-job operational view</div></div><input id="jobFilter" type="text" placeholder="Filter job / location / technician…" style="max-width:300px"></div><div id="jobTable"></div></div></section>
+
+<section id="page-patterns" class="page hidden"><div class="glass card"><div class="tiny neon">PATTERN ENGINE</div><div class="panel-title" style="font-size:28px;margin-top:4px">Recurring failure modes</div><p class="muted" style="font-size:11px;line-height:1.6">Patterns are derived from the event ledger and normalized job records. They become actionable only when the evidence threshold is met.</p><div id="patternsGrid" class="grid three section"></div></div></section>
+
+<section id="page-brain" class="page hidden"><div class="glass card"><div class="panel-head"><div><div class="tiny neon">QA BRAIN</div><div class="panel-title" style="font-size:28px">10-agent synthesis</div></div><button class="btn primary" id="brainButton">Analyze Current State</button></div><div id="agentGrid" class="grid three"></div><pre id="brainOutput" class="mono muted" style="white-space:pre-wrap;font-size:10px;line-height:1.6;background:#07070a;border:1px solid #202028;border-radius:10px;padding:13px;margin-top:12px;min-height:110px">IDLE // Awaiting synthesis</pre><p class="muted" style="font-size:10px;line-height:1.5;margin-top:10px">Agent scores are a derived index from overall operational health, not independent per-agent measurements. Treat them as a triage signal, not a verified finding.</p></div></section>
+
+<section id="page-escalation" class="page hidden"><div class="glass card"><div class="tiny pink">ESCALATION ENGINE</div><div class="panel-title" style="font-size:28px;margin-top:4px">Deterministic routing queue</div><p class="muted" style="font-size:11px;line-height:1.6">Every signal has a rule, source, reason and suggested destination. No silent escalation.</p><div id="escalationList" class="section"></div></div></section>
+
+<section id="page-adapters" class="page hidden"><div class="glass card"><div class="tiny cyan">ADAPTER FABRIC</div><div class="panel-title" style="font-size:28px;margin-top:4px">Authoritative system connections</div><div id="adapterTable" class="section"></div><div class="section"><div class="tiny muted">Normalized event contract</div><pre id="contract" class="mono" style="white-space:pre-wrap;background:#07070a;border:1px solid #202028;border-radius:10px;padding:13px;font-size:10px;line-height:1.55"></pre></div></div></section>
+
+<section id="page-readiness" class="page hidden"><div class="glass card"><div class="tiny yellow">READINESS</div><div class="panel-title" style="font-size:28px;margin-top:4px">Crew and execution readiness</div><p class="muted" style="font-size:11px">This surface is ready to consume Team Lead OS / readiness events without becoming a duplicate authority.</p><div id="readinessGrid" class="grid three section"></div></div></section>
+</main></div>
+
+<div id="toast" class="toast glass hidden"></div>
+<div id="modal" class="modal hidden"><div class="modalbox glass"><div class="panel-head"><div id="modalTitle" class="panel-title">Event</div><button id="modalClose" class="btn">Close</button></div><pre id="modalBody" class="mono" style="white-space:pre-wrap;font-size:10px;line-height:1.6"></pre></div></div>
+
+<script>
+(()=>{
+"use strict";
+const AGENTS=[
+["QA Inspector","Evidence completeness, cleaning defects, stop-work signals"],
+["Safety","Life-safety conditions, access, equipment and unsafe execution"],
+["NFPA / Standards","Rule-oriented verification and standards checkpoints"],
+["Operations","Workflow timing, readiness, route and execution anomalies"],
+["Revenue","Rework exposure, callbacks, client risk and leakage"],
+["Training","Coaching opportunities tied to observed failure modes"],
+["Fraud / Integrity","Padding, impossible timing, duplicate or suspicious evidence"],
+["Customer Advocate","Client-visible quality and service confidence"],
+["Regional","Recurring site / crew / location risk"],
+["Executive","Cross-system synthesis and priority ranking"]
+];
+const ADAPTERS=[
+["QA Brain","Core multi-agent analyzer","CORE","ACTIVE","nexus-qa-brain-evidence-pack-v1"],
+["KEC Field Monitor","Evidence and checkpoint runtime","FIELD","READY","KEC-FIELD-MONITOR runtime pack"],
+["Team Lead OS","Crew readiness / execution","PEOPLE","READY","readiness / team events"],
+["Scorecard","Performance metrics","METRICS","READY","scorecard event contract"],
+["KEC Shield","QA/reporting surface","QA","READY","QA/report events"],
+["Service Manager OS","Job/service workflow","OPS","READY","job lifecycle events"],
+["Command Center","Cross-system orchestration","CTRL","READY","command telemetry"]
+];
+const DEMO_JOBS=[
+{id:"HB-2601",location:"Demo • Cedar Park",technician:"Crew A",status:"REVIEW",before:12,after:9,deficiency:3,photos:21,videos:2},
+{id:"HB-2602",location:"Demo • Kyle",technician:"Crew B",status:"PASS",before:14,after:14,deficiency:0,photos:28,videos:4},
+{id:"HB-2603",location:"Demo • Buda",technician:"Crew A",status:"REVIEW",before:10,after:0,deficiency:2,photos:12,videos:0},
+{id:"HB-2604",location:"Demo • Austin",technician:"Crew C",status:"FAIL",before:4,after:2,deficiency:5,photos:8,videos:0},
+{id:"HB-2605",location:"Demo • Round Rock",technician:"Crew B",status:"PASS",before:16,after:16,deficiency:0,photos:32,videos:5}
+];
+const state={events:[],jobs:[],people:[],alerts:[],patterns:[],brain:null,demo:false,sourceFiles:[]};
+const LS_KEY="qa-brain-v2-ledger";
+const uid=()=> (crypto.randomUUID?crypto.randomUUID():"evt_"+Date.now().toString(36)+Math.random().toString(16).slice(2,10));
+function persist(){try{localStorage.setItem(LS_KEY,JSON.stringify({events:state.events,jobs:state.jobs,people:state.people,brain:state.brain,demo:state.demo,sourceFiles:state.sourceFiles}))}catch(e){}}
+function restore(){try{const raw=localStorage.getItem(LS_KEY);if(!raw)return false;const d=JSON.parse(raw);state.events=d.events||[];state.jobs=d.jobs||[];state.people=d.people||[];state.brain=d.brain||null;state.demo=!!d.demo;state.sourceFiles=d.sourceFiles||[];return true}catch(e){return false}}
+function setMode(){const m=document.getElementById("modeStatus");if(!m)return;m.textContent=state.demo?"DEMO — SYNTHETIC DATA":"OBSERVER ONLINE";m.className="status "+(state.demo?"yellow":"neon")}
+const $=id=>document.getElementById(id);
+const esc=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+function toast(s){$("toast").textContent=s;$("toast").classList.remove("hidden");clearTimeout(toast.t);toast.t=setTimeout(()=>$("toast").classList.add("hidden"),2600)}
+function iso(){return new Date().toISOString()}
+function addEvent(type,payload,source="MASTER-CONTROL",severity="INFO"){
+ const e={id:"evt_"+uid(),type,occurredAt:iso(),source,severity,payload};
+ state.events.unshift(e); return e;
+}
+function normalize(raw,file){
+ const source=raw.source||raw.schema||raw.system||file;
+ const events=Array.isArray(raw.events)?raw.events:[];
+ const jobs=[];
+ const rawJobs=raw.job?[raw.job]:(Array.isArray(raw.jobs)?raw.jobs:(Array.isArray(raw.data?.jobs)?raw.data.jobs:(Array.isArray(raw.rows)?raw.rows:[])));
+ rawJobs.forEach(j=>{
+   const c=j.counts||j.evidence||raw.counts||raw.evidence||{};
+   jobs.push({
+    id:j.id||j.jobId||j.location||("JOB-"+Math.random().toString(16).slice(2,8)),
+    location:j.location||j.site||"Unknown", technician:j.technician||j.tech||"Unknown",
+    type:j.type||j.jobType||"KEC",status:j.status||"REVIEW",date:j.date||j.dateIso||"—",
+    before:+(c.before??j.before??0),after:+(c.after??j.after??0),deficiency:+(c.deficiency??j.deficiency??0),
+    photos:+(c.photos??j.photos??0),videos:+(c.videos??j.videos??0),source
+   });
+ });
+ const people=Array.isArray(raw.people)?raw.people:(Array.isArray(raw.team)?raw.team:[]);
+ return {source,file,jobs,events,people,raw};
+}
+function ingest(raw,file){
+ const p=normalize(raw,file);state.sourceFiles.push({file,source:p.source,loadedAt:iso()});
+ p.jobs.forEach(j=>{const old=state.jobs.find(x=>x.id===j.id);if(old)Object.assign(old,j);else state.jobs.push(j)});
+ p.people.forEach(x=>{const n=x.name||x.id;if(n&&state.people.some(y=>(y.name||y.id)===n))return;state.people.push({...x,source:p.source})});
+ p.events.forEach(e=>state.events.unshift({...e,id:e.id||"evt_"+crypto.randomUUID(),occurredAt:e.occurredAt||iso(),source:e.source||p.source,severity:e.severity||"INFO"}));
+ p.jobs.forEach(j=>addEvent(j.status==="PASS"?"QA_PASSED":j.status==="FAIL"?"QA_FAILED":"QA_REVIEWED",{jobId:j.id,location:j.location,status:j.status,evidence:{before:j.before,after:j.after,deficiency:j.deficiency}},p.source,j.status==="FAIL"?"CRITICAL":"INFO"));
+ derive();persist();setMode();render();toast(`Imported ${file}: ${p.jobs.length} job(s), ${p.events.length} event(s)`);
+}
+function loadDemo(){
+ state.events=[];state.jobs=[];state.people=[];state.alerts=[];state.patterns=[];state.sourceFiles=[];state.demo=true;
+ DEMO_JOBS.forEach(j=>state.jobs.push({...j}));
+ DEMO_JOBS.forEach(j=>{
+   addEvent("JOB_STARTED",{jobId:j.id,location:j.location}, "DEMO-FIELD-MONITOR");
+   addEvent(j.before&&j.after?"EVIDENCE_RECEIVED":"CHECKPOINT_MISSED",{jobId:j.id,before:j.before,after:j.after,deficiency:j.deficiency},"DEMO-FIELD-MONITOR",j.after===0?"CRITICAL":"INFO");
+   if(j.deficiency)addEvent("DEFICIENCY_FOUND",{jobId:j.id,count:j.deficiency},"DEMO-QA-BRAIN","REVIEW");
+   if(j.status==="FAIL")addEvent("QA_FAILED",{jobId:j.id},"DEMO-QA-BRAIN","CRITICAL");
+   else if(j.status==="PASS")addEvent("QA_PASSED",{jobId:j.id},"DEMO-QA-BRAIN","INFO");
+ });
+ state.people=[{name:"Crew A",role:"Field Crew",readiness:78,source:"DEMO-TEAM-LEAD"},{name:"Crew B",role:"Field Crew",readiness:94,source:"DEMO-TEAM-LEAD"},{name:"Crew C",role:"Field Crew",readiness:61,source:"DEMO-TEAM-LEAD"}];
+ addEvent("READINESS_CHANGED",{crew:"Crew A",readiness:78},"DEMO-TEAM-LEAD","INFO");
+ addEvent("READINESS_CHANGED",{crew:"Crew C",readiness:61},"DEMO-TEAM-LEAD","REVIEW");
+ derive();persist();setMode();render();toast("Demo dataset loaded — clearly marked synthetic");
+}
+function derive(){
+ state.alerts=[];
+ state.jobs.forEach(j=>{
+  if(j.before===0||j.after===0)state.alerts.push({sev:"CRITICAL",title:`${j.id} evidence checkpoint incomplete`,detail:`${j.location} · before ${j.before} / after ${j.after}`,route:"Field Monitor / QA"});
+  if(j.deficiency>0)state.alerts.push({sev:"REVIEW",title:`${j.id} has ${j.deficiency} deficiency record(s)`,detail:j.location,route:"QA Brain / Coaching"});
+  if(j.videos===0&&j.photos>8)state.alerts.push({sev:"REVIEW",title:`${j.id} has no video evidence`,detail:j.location,route:"QA Review"});
+  if(j.status==="FAIL")state.alerts.push({sev:"CRITICAL",title:`${j.id} failed QA`,detail:j.location,route:"Manager escalation"});
+ });
+ state.people.forEach(p=>{const r=Number(p.readiness??p.score);if(Number.isFinite(r)&&r<70)state.alerts.push({sev:"REVIEW",title:`${p.name||"Crew"} readiness below threshold`,detail:`Readiness ${r}%`,route:"Team Lead OS / Training"})});
+ const defectJobs=state.jobs.filter(j=>j.deficiency>0).length;
+ const incomplete=state.jobs.filter(j=>j.before===0||j.after===0).length;
+ state.patterns=[
+  {name:"Deficiency recurrence",count:defectJobs,threshold:2,detail:"Jobs carrying one or more deficiency records."},
+  {name:"Incomplete evidence",count:incomplete,threshold:1,detail:"Missing before/after checkpoint evidence."},
+  {name:"Video coverage gap",count:state.jobs.filter(j=>j.videos===0).length,threshold:2,detail:"Jobs with no video evidence."},
+  {name:"Crew readiness risk",count:state.people.filter(p=>Number(p.readiness??p.score)<70).length,threshold:1,detail:"Readiness below the command threshold."}
+ ];
+}
+function health(){
+ if(!state.jobs.length)return 0;
+ let total=0;state.jobs.forEach(j=>{let s=100;if(j.before===0)s-=25;if(j.after===0)s-=25;if(j.deficiency>0)s-=Math.min(25,j.deficiency*5);if(j.videos===0)s-=5;if(j.status==="FAIL")s-=20;total+=Math.max(0,s)});return Math.round(total/state.jobs.length)
+}
+function coverage(){
+ if(!state.jobs.length)return 0;let n=0;state.jobs.forEach(j=>n+=(j.before>0)+(j.after>0)+(j.photos>0));return Math.round(n/(state.jobs.length*3)*100)
+}
+function sevClass(s){return s==="CRITICAL"?"critical":s==="REVIEW"?"review":"pass"}
+function renderOverview(){
+ const h=health(),c=coverage();$("kHealth").textContent=h?h+"%":"—";$("bHealth").style.width=h+"%";$("kJobs").textContent=state.jobs.length;$("kSignals").textContent=state.alerts.length;$("kCritical").textContent=state.alerts.filter(a=>a.sev==="CRITICAL").length;$("kCoverage").textContent=c?c+"%":"—";
+ $("adapterCount").textContent=ADAPTERS.filter(x=>x[3]==="ACTIVE").length+" ACTIVE · "+ADAPTERS.filter(x=>x[3]==="READY").length+" READY";
+ $("adapterMini").innerHTML=ADAPTERS.map(a=>`<div style="display:flex;justify-content:space-between;padding:8px 0;border-top:1px solid #202028;font-size:10px"><span>${a[0]}</span><span class="tiny ${a[3]==="ACTIVE"?"neon":"cyan"}">${a[3]}</span></div>`).join("");
+ $("overviewAlerts").innerHTML=state.alerts.slice(0,5).map(a=>`<div class="alert ${a.sev==="REVIEW"?"review":""}"><span class="badge ${sevClass(a.sev)}">${a.sev}</span><b style="font-size:11px;margin-left:6px">${esc(a.title)}</b><div class="muted" style="font-size:9px;margin-top:4px">${esc(a.detail)} · route: ${esc(a.route)}</div></div>`).join("")||`<div class="muted" style="padding:15px 0;font-size:11px">No alerts. Import real evidence or load the explicitly synthetic demo.</div>`;
+ $("overviewEvents").innerHTML=state.events.slice(0,7).map(eventHTML).join("")||`<div class="muted" style="padding:15px 0;font-size:11px">No telemetry received.</div>`;
+ drawChart();
+}
+function eventHTML(e){return `<div class="event"><div class="event-type">${esc(e.type)}</div><div><div class="event-text">${esc(JSON.stringify(e.payload))}</div><div class="event-src">${esc(e.source)}</div></div><div class="event-time mono">${esc(e.occurredAt.slice(11,19))}</div></div>`}
+function drawChart(){
+ const c=$("riskChart"),ctx=c.getContext("2d");if(!ctx)return;const dpr=devicePixelRatio||1,w=c.clientWidth,h=240;c.width=w*dpr;c.height=h*dpr;ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,w,h);
+ const vals=[state.alerts.filter(a=>a.sev==="CRITICAL").length,state.alerts.filter(a=>a.sev==="REVIEW").length,Math.max(0,state.jobs.length-state.alerts.length)],labs=["CRITICAL","REVIEW","STABLE"],cols=["#ff0080","#ffcc00","#00ff87"],max=Math.max(1,...vals),bw=Math.max(26,(w-100)/3);
+ vals.forEach((v,i)=>{let x=25+i*(bw+22),base=h-32,bh=(h-65)*(v/max);ctx.fillStyle="#17171e";ctx.fillRect(x,30,bw,h-65);ctx.fillStyle=cols[i];ctx.shadowColor=cols[i];ctx.shadowBlur=16;ctx.fillRect(x,base-bh,bw,bh);ctx.shadowBlur=0;ctx.fillStyle="#888";ctx.font="9px monospace";ctx.fillText(labs[i],x,base+17);ctx.fillStyle="#fff";ctx.font="bold 17px monospace";ctx.fillText(v,x,Math.max(20,base-bh-7))})
+}
+function renderEvents(){
+ $("eventTable").innerHTML=state.events.length?`<table class="table"><thead><tr><th>Time</th><th>Event</th><th>Severity</th><th>Source</th><th>Payload</th></tr></thead><tbody>${state.events.map(e=>`<tr><td class="mono muted">${esc(e.occurredAt)}</td><td class="cyan">${esc(e.type)}</td><td><span class="badge ${sevClass(e.severity)}">${esc(e.severity)}</span></td><td>${esc(e.source)}</td><td><button class="btn" data-event="${esc(e.id)}">Inspect</button></td></tr>`).join("")}</tbody></table>`:`<div class="muted" style="padding:25px">Ledger empty.</div>`;
+}
+function renderJobs(){
+ const f=($("jobFilter").value||"").toLowerCase();const rows=state.jobs.filter(j=>JSON.stringify(j).toLowerCase().includes(f));
+ $("jobTable").innerHTML=rows.length?`<table class="table"><thead><tr><th>Job</th><th>Location</th><th>Technician</th><th>Evidence</th><th>Status</th><th>Source</th></tr></thead><tbody>${rows.map(j=>`<tr><td class="neon mono">${esc(j.id)}</td><td>${esc(j.location)}</td><td>${esc(j.technician)}</td><td>${j.before}/${j.after}/${j.deficiency} <span class="muted">· ${j.photos}p/${j.videos}v</span></td><td><span class="badge ${j.status==="PASS"?"pass":j.status==="FAIL"?"critical":"review"}">${esc(j.status)}</span></td><td class="muted">${esc(j.source)}</td></tr>`).join("")}</tbody></table>`:`<div class="muted" style="padding:25px">No matching jobs.</div>`;
+}
+function renderPatterns(){
+ $("patternsGrid").innerHTML=state.patterns.map(p=>{const hot=p.count>=p.threshold;return `<div class="card" style="border:1px solid ${hot?"#ff008044":"#24242d"};background:#09090d"><div class="tiny ${hot?"pink":"muted"}">${hot?"ACTIONABLE":"WATCH"}</div><div style="font-weight:950;margin-top:5px">${p.name}</div><div class="value ${hot?"pink":"cyan"}" style="font-size:28px;margin-top:8px">${p.count}</div><div class="muted" style="font-size:10px;line-height:1.5">${p.detail}</div><div class="tiny muted" style="margin-top:10px">Threshold: ${p.threshold}</div></div>`}).join("")
+}
+function renderBrain(){
+ const h=health();$("agentGrid").innerHTML=AGENTS.map((a,i)=>{let s=state.brain?Math.max(42,Math.min(99,h+(i%5)*2-(state.alerts.filter(x=>x.sev==="CRITICAL").length>i?8:0))):"—";return `<div class="agent"><div style="display:flex;justify-content:space-between;gap:8px"><div><div class="tiny muted">AGENT ${String(i+1).padStart(2,"0")}</div><b>${a[0]}</b></div><span class="agent-score ${s!=="—"&&s<70?"pink":"neon"}">${s}</span></div><small>${a[1]}</small>${s!=="—"?`<div class="bar" style="margin-top:10px"><div class="fill ${s<70?"pink":"neon"}" style="width:${s}%"></div></div>`:""}</div>`}).join("");
+ $("brainOutput").textContent=state.brain||"IDLE // Awaiting synthesis";
+}
+function synth(){
+ if(!state.jobs.length){toast("No jobs in ledger. Import a real pack or load the explicitly synthetic demo.");return}
+ derive();state.brain=`QA BRAIN SYNTHESIS · ${iso()}
+
+OBSERVATION
+Jobs: ${state.jobs.length}
+Operational health: ${health()}%
+Evidence coverage: ${coverage()}%
+Critical signals: ${state.alerts.filter(a=>a.sev==="CRITICAL").length}
+Review signals: ${state.alerts.filter(a=>a.sev==="REVIEW").length}
+
+DECISION ORDER
+1. Protect life safety and stop-work conditions.
+2. Verify evidence completeness before trusting a pass.
+3. Correlate recurring failure modes across jobs.
+4. Route issues to the authoritative workflow.
+5. Generate coaching/readiness signals only from observed evidence.
+
+PATTERN SUMMARY
+${state.patterns.map(p=>`• ${p.name}: ${p.count} observed / threshold ${p.threshold}`).join("\n")}
+
+SOURCE DISCIPLINE
+${state.demo?"DEMO DATASET — synthetic; do not treat as production evidence.":"REAL IMPORTED DATA — source provenance retained."}`;
+ addEvent("QA_SYNTHESIS_COMPLETED",{health:health(),coverage:coverage(),jobs:state.jobs.length,signals:state.alerts.length},"MASTER-CONTROL","INFO");persist();render();setPage("brain");toast("Master synthesis complete");
+}
+function renderEscalation(){
+ $("escalationList").innerHTML=state.alerts.length?state.alerts.map((a,i)=>`<div class="alert ${a.sev==="REVIEW"?"review":""}"><div style="display:flex;justify-content:space-between;gap:10px"><div><span class="badge ${sevClass(a.sev)}">${a.sev}</span><b style="margin-left:6px">${esc(a.title)}</b></div><span class="tiny muted">ESC-${String(i+1).padStart(3,"0")}</span></div><div class="muted" style="font-size:10px;margin-top:6px">${esc(a.detail)}</div><div class="tiny cyan" style="margin-top:8px">ROUTE → ${esc(a.route)}</div></div>`).join(""):`<div class="muted" style="padding:25px">Escalation queue clear.</div>`;
+}
+function renderAdapters(){
+ $("adapterTable").innerHTML=ADAPTERS.map(a=>`<div class="event"><div><b>${a[0]}</b><div class="tiny muted">${a[2]}</div></div><div><div style="font-size:10px">${a[1]}</div><div class="tiny muted">${a[4]}</div></div><span class="badge ${a[3]==="ACTIVE"?"pass":"info"}">${a[3]}</span></div>`).join("");
+ $("contract").textContent=JSON.stringify({version:"qa-brain-event-v2",event:{id:"string",type:"JOB_STARTED | EVIDENCE_RECEIVED | CHECKPOINT_MISSED | DEFICIENCY_FOUND | QA_REVIEWED | QA_FAILED | QA_PASSED | COACHING_REQUIRED | READINESS_CHANGED | ESCALATION_CREATED | ESCALATION_RESOLVED | QA_SYNTHESIS_COMPLETED",occurredAt:"ISO-8601",source:"authoritative-system-id",severity:"INFO | REVIEW | CRITICAL",payload:"object"},principles:["provenance required","no silent mutation","source remains authoritative","events are append-oriented","adapters normalize; master correlates"]},null,2)
+}
+function renderReadiness(){
+ $("readinessGrid").innerHTML=state.people.length?state.people.map(p=>{const r=Number(p.readiness??p.score);return `<div class="agent"><div class="tiny muted">${esc(p.role||"TEAM")}</div><b>${esc(p.name||p.id||"Unnamed")}</b><div class="value ${r<70?"pink":"neon"}" style="font-size:29px;margin-top:8px">${Number.isFinite(r)?r+"%":"—"}</div><div class="muted" style="font-size:9px">${esc(p.source||"")}</div></div>`}).join(""):`<div class="muted" style="padding:25px;grid-column:1/-1">No readiness records.</div>`;
+}
+function render(){
+ derive();renderOverview();renderEvents();renderJobs();renderPatterns();renderBrain();renderEscalation();renderAdapters();renderReadiness();
+}
+function setPage(p){document.querySelectorAll(".page").forEach(x=>x.classList.add("hidden"));$("page-"+p).classList.remove("hidden");document.querySelectorAll("#nav button").forEach(x=>x.classList.toggle("active",x.dataset.page===p));}
+document.querySelectorAll("#nav button").forEach(b=>b.onclick=()=>setPage(b.dataset.page));
+document.querySelectorAll("[data-page-jump]").forEach(b=>b.onclick=()=>setPage(b.dataset.pageJump));
+$("runSynthesis").onclick=synth;$("brainButton").onclick=synth;$("loadDemo").onclick=loadDemo;
+$("clearAll").onclick=()=>{if(confirm("Clear the local event ledger and imported records?")){state.events=[];state.jobs=[];state.people=[];state.alerts=[];state.patterns=[];state.brain=null;state.sourceFiles=[];state.demo=false;persist();setMode();render();toast("Local ledger cleared")}};
+$("fileInput").onchange=async e=>{for(const f of e.target.files){try{ingest(JSON.parse(await f.text()),f.name)}catch(err){toast("Rejected "+f.name+" — invalid JSON")}}};
+$("jobFilter").oninput=renderJobs;
+$("eventTable").onclick=e=>{const b=e.target.closest("[data-event]");if(!b)return;const x=state.events.find(x=>x.id===b.dataset.event);if(x){$("modalTitle").textContent=x.type;$("modalBody").textContent=JSON.stringify(x,null,2);$("modal").classList.remove("hidden")}};
+$("modalClose").onclick=()=>$("modal").classList.add("hidden");$("modal").onclick=e=>{if(e.target.id==="modal")$("modal").classList.add("hidden")};
+$("exportLedger").onclick=()=>{const blob=new Blob([JSON.stringify({schema:"qa-brain-event-ledger-v2",exportedAt:iso(),demo:state.demo,events:state.events,jobs:state.jobs,people:state.people},null,2)],{type:"application/json"});const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="qa-brain-event-ledger-v2.json";a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000);toast("Ledger exported")};
+let rzT;window.addEventListener("resize",()=>{clearTimeout(rzT);rzT=setTimeout(()=>{try{drawChart()}catch(e){}},150)});
+setInterval(()=>{$("clock").textContent=new Date().toLocaleTimeString()},1000);$("clock").textContent=new Date().toLocaleTimeString();
+window.QA_BRAIN_MASTER_V2={state,ingest,loadDemo,synth,render,contract:"qa-brain-event-v2"};
+restore();setMode();
+render();
+})();
+</script>
+</body>
+</html>
